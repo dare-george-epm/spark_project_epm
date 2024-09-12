@@ -1,4 +1,3 @@
-# Setup azurerm as a state backend
 terraform {
   backend "azurerm" {
   }

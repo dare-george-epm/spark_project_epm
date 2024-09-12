@@ -57,9 +57,6 @@ RUN chmod +x /opt/*.sh
 RUN apk update && \
     apk add --no-cache python3 py3-pip build-base python3-dev musl-dev && \
     pip3 install --upgrade pip && \
-#    pip3 install /tmp/pydantic_core-2.20.1-pp310-pypy310_pp73-musllinux_1_1_x86_64.whl && \
-#    pip3 install /tmp/pydantic-2.8.2-py3-none-any.whl && \
-#    pip3 install /tmp/pydantic_settings-2.5.2-py3-none-any.whl && \
     pip3 install setuptools pydantic==1.9.2 pygeohash requests pyspark opencage python-geohash && \
     rm -rf /var/cache/apk/*
 
