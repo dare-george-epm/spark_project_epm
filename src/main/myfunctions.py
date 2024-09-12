@@ -12,6 +12,7 @@ def initialize_spark(app_name="SimpleApp", executor_memory="8g", driver_memory="
         .config("spark.executor.memory", executor_memory) \
         .config("spark.driver.memory", driver_memory) \
         .config("spark.executor.cores", "2") \
+        .config("spark.jars.packages", "org.apache.hadoop:hadoop-azure:3.3.4,com.microsoft.azure:azure-storage:8.6.6") \
         .config("spark.sql.shuffle.partitions", "200") \
         .config("spark.sql.broadcastTimeout", "600") \
         .config("spark.sql.autoBroadcastJoinThreshold", "-1")\
