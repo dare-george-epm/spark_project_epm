@@ -12,7 +12,6 @@ def initialize_spark(app_name="SimpleApp", executor_memory="8g", driver_memory="
         .config("spark.executor.memory", executor_memory) \
         .config("spark.driver.memory", driver_memory) \
         .config("spark.executor.cores", "2") \
-        .config("spark.jars.packages", "org.apache.hadoop:hadoop-azure:3.3.4,com.microsoft.azure:azure-storage:8.6.6") \
         .config("spark.sql.shuffle.partitions", "200") \
         .config("spark.sql.broadcastTimeout", "600") \
         .config("spark.sql.autoBroadcastJoinThreshold", "-1")\
@@ -76,3 +75,5 @@ def cast_lat_long_to_float(df):
 def add_geohash_column(df, lat_col="Latitude", lon_col="Longitude", precision=4):
     geohash_udf = udf(lambda lat, lon: geohash.encode(lat, lon, precision), StringType())
     return df.withColumn("Geohash", geohash_udf(col(lat_col), col(lon_col)))
+
+# .config("spark.jars.packages", "org.apache.hadoop:hadoop-azure:3.3.4,com.microsoft.azure:azure-storage:8.6.6") \
