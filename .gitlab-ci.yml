@@ -18,7 +18,7 @@ variables:
   sampling_fraction: $sampling_fraction
   hotels_path: $hotels_path
   weather_path: $weather_path
-  KUBERNETES_MASTER: $KUBERNETES_MASTER
+
 
 # Terraform Apply
 terraform_apply:
