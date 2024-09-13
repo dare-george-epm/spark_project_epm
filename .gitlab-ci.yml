@@ -19,6 +19,8 @@ variables:
   hotels_path: $hotels_path
   weather_path: $weather_path
   key: $key
+  terraform_state_key: "epamspark/terraform.tfstate"
+
 
 # Terraform Apply
 terraform_apply:
@@ -26,7 +28,7 @@ terraform_apply:
   image: hashicorp/terraform:1.5.0
   script:
     - cd terraform
-    - terraform init
+    - terraform init -backend-config="storage_account_name=$azure_storage_account" -backend-config="container_name=$storage_container" -backend-config="key=$terraform_state_key"
     - terraform plan
     - terraform apply -auto-approve
   when: manual
@@ -55,5 +57,6 @@ terraform_destroy:
   stage: destroy
   image: hashicorp/terraform:1.5.0
   script:
-    - terraform destroy -auto-approve
+    - cd terraform
+    - terraform init -backend-config="storage_account_name=$azure_storage_account" -backend-config="container_name=$storage_container" -backend-config="key=$terraform_state_key"
   when: manual

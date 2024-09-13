@@ -1,17 +1,3 @@
-terraform {
-  backend "azurerm" {
-    storage_account_name = var.azure_storage_account
-    container_name       = var.storage_container
-    key                  = var.key
-  }
-}
-
-variable "azure_storage_account" {}
-variable "storage_container" {}
-variable "key" {}
-
-
-
 # Configure the Microsoft Azure Provider
 provider "azurerm" {
   features {}
