@@ -28,9 +28,6 @@ terraform_apply:
     - terraform init
     - terraform plan
     - terraform apply -auto-approve
-  only:
-    changes:
-      - terraform/**
   when: manual
 
 # Deploy Spark Job (Manual)
