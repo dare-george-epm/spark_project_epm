@@ -1,13 +1,11 @@
 stages:
   - terraform
-  - build
   - deploy
   - destroy
 
 variables:
-  # Define any necessary environment variables
   ARM_CLIENT_ID: ${ARM_CLIENT_ID}
-  ARM_CLIENT_SECRET: ${RM_CLIENT_SECRET}
+  ARM_CLIENT_SECRET: ${ARM_CLIENT_SECRET}
   ARM_TENANT_ID: ${ARM_TENANT_ID}
   ARM_SUBSCRIPTION_ID: ${ARM_SUBSCRIPTION_ID}
   azure_storage_account: $azure_storage_account
@@ -21,6 +19,7 @@ variables:
   hotels_path: $hotels_path
   weather_path: $weather_path
 
+
 # Terraform Apply
 terraform_apply:
   stage: terraform
@@ -29,38 +28,16 @@ terraform_apply:
     - terraform init
     - terraform plan
     - terraform apply -auto-approve
-  only:
-    changes:
-      - terraform/**
   when: manual
-
-
-# Build Docker Image
-build_docker:
-  stage: build
-  image: docker:20.10
-  services:
-    - docker:dind
-  variables:
-    DOCKER_HOST: tcp://docker:2375
-    DOCKER_DRIVER: overlay2
-  script:
-      - docker info
-      - docker build -t my-docker-image:latest .
-  only:
-    changes:
-      - docker/**
-      - src/**
-  when: manual
-
 
 # Deploy Spark Job (Manual)
 deploy_spark_job:
   stage: deploy
-  image: bitnami/kubectl:latest
+  image: odare179/final_spark2:latest
   script:
-    - spark-submit \
-      --master k8s://$SERVER \
+    - "echo \"Using Kubernetes API server URL: $KUBERNETES_MASTER\""
+    - "spark-submit \
+      --master k8s://$KUBERNETES_MASTER \
       --deploy-mode cluster \
       --name data-eng-spark \
       --num-executors 2 \
@@ -69,11 +46,7 @@ deploy_spark_job:
       --conf spark.executor.memory=1G \
       --conf spark.kubernetes.executor.request.cores=500m \
       --conf spark.kubernetes.driver.request.cores=500m \
-      local:///opt/main/main.py
-  only:
-    changes:
-      - src/main/**
-      - kubernetes/**
+      local:///opt/main/main.py"
   when: manual
 
 # Destroy Infrastructure (Manual)

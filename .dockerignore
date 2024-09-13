@@ -9,8 +9,9 @@ terraform/
 *.tmp
 deployment.yaml
 mywork/
+docker/Dockerfile
 screenshots/
 sparkbasics.egg-info/
 spark-job.yaml
 spark-role.yaml
-binaries/
+binary/
