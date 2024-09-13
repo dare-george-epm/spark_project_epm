@@ -19,12 +19,12 @@ variables:
   hotels_path: $hotels_path
   weather_path: $weather_path
 
-
 # Terraform Apply
 terraform_apply:
   stage: terraform
   image: hashicorp/terraform:1.5.0
   script:
+    - cd terraform
     - terraform init
     - terraform plan
     - terraform apply -auto-approve
