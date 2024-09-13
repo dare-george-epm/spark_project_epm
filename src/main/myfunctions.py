@@ -5,7 +5,7 @@ from pyspark.sql.functions import col, when
 from pyspark.sql.types import StringType
 from pyspark.sql.functions import udf
 
-def initialize_spark(app_name="SimpleApp", executor_memory="8g", driver_memory="8g"):
+def initialize_spark(app_name="SimpleApp", executor_memory="1g", driver_memory="1g"):
     """Initializes and returns a Spark session."""
     spark = SparkSession.builder \
         .appName(app_name) \

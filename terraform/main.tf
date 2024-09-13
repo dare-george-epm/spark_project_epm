@@ -75,7 +75,7 @@ resource "azurerm_kubernetes_cluster" "bdcc" {
   default_node_pool {
     name       = "default"
     node_count = 1
-    vm_size    = "Standard_D8_v3"
+    vm_size    = "Standard_D2_v2"
   }
 
   identity {
@@ -96,3 +96,5 @@ output "kube_config" {
   sensitive = true
   value = azurerm_kubernetes_cluster.bdcc.kube_config_raw
 }
+
+
