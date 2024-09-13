@@ -50,10 +50,6 @@ deploy_spark_job:
       --conf spark.kubernetes.executor.request.cores=500m \
       --conf spark.kubernetes.driver.request.cores=500m \
       local:///opt/main/main.py
-  only:
-    changes:
-      - src/main/**
-      - kubernetes/**
   when: manual
 
 # Destroy Infrastructure (Manual)
