@@ -18,6 +18,7 @@ variables:
   sampling_fraction: $sampling_fraction
   hotels_path: $hotels_path
   weather_path: $weather_path
+  key: $key
 
 # Terraform Apply
 terraform_apply:
