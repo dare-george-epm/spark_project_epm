@@ -35,8 +35,8 @@ deploy_spark_job:
   stage: deploy
   image: odare179/final_spark2:latest
   script:
-    - echo "Using Kubernetes API server URL: $KUBERNETES_MASTER"
-    - spark-submit \
+    - "echo \"Using Kubernetes API server URL: $KUBERNETES_MASTER\""
+    - "spark-submit \
       --master k8s://$KUBERNETES_MASTER \
       --deploy-mode cluster \
       --name data-eng-spark \
@@ -46,7 +46,7 @@ deploy_spark_job:
       --conf spark.executor.memory=1G \
       --conf spark.kubernetes.executor.request.cores=500m \
       --conf spark.kubernetes.driver.request.cores=500m \
-      local:///opt/main/main.py
+      local:///opt/main/main.py"
   when: manual
 
 # Destroy Infrastructure (Manual)
