@@ -14,3 +14,4 @@ sparkbasics.egg-info/
 spark-job.yaml
 spark-role.yaml
 binaries/
+.gitlab-ci.yml

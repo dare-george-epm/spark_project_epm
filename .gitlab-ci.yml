@@ -1,0 +1,88 @@
+stages:
+  - terraform
+  - build
+  - deploy
+  - destroy
+
+variables:
+  # Define any necessary environment variables
+  ARM_CLIENT_ID: ${ARM_CLIENT_ID}
+  ARM_CLIENT_SECRET: ${RM_CLIENT_SECRET}
+  ARM_TENANT_ID: ${ARM_TENANT_ID}
+  ARM_SUBSCRIPTION_ID: ${ARM_SUBSCRIPTION_ID}
+  azure_storage_account: $azure_storage_account
+  azure_client_id: $azure_client_id
+  azure_client_secret: $azure_client_secret
+  azure_tenant_id: $azure_tenant_id
+  storage_container: $storage_container
+  geocode_key: $geocode_key
+  output_file_path: $output_file_path
+  sampling_fraction: $sampling_fraction
+  hotels_path: $hotels_path
+  weather_path: $weather_path
+
+# Terraform Apply
+terraform_apply:
+  stage: terraform
+  image: hashicorp/terraform:1.5.0
+  script:
+    - terraform init
+    - terraform plan
+    - terraform apply -auto-approve
+  only:
+    changes:
+      - terraform/**
+  when: manual
+
+
+# Build Docker Image
+build_docker:
+  stage: build
+  image: docker:20.10
+  services:
+    - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_DRIVER: overlay2
+  script:
+      - docker info
+      - docker build -t my-docker-image:latest .
+  only:
+    changes:
+      - docker/**
+      - src/**
+  when: manual
+
+
+# Deploy Spark Job (Manual)
+deploy_spark_job:
+  stage: deploy
+  image: bitnami/kubectl:latest
+  script:
+    - spark-submit \
+      --master k8s://$SERVER \
+      --deploy-mode cluster \
+      --name data-eng-spark \
+      --num-executors 2 \
+      --conf spark.cores=1 \
+      --conf spark.driver.memory=1G \
+      --conf spark.executor.memory=1G \
+      --conf spark.kubernetes.executor.request.cores=500m \
+      --conf spark.kubernetes.driver.request.cores=500m \
+      local:///opt/main/main.py
+  only:
+    changes:
+      - src/main/**
+      - kubernetes/**
+  when: manual
+
+# Destroy Infrastructure (Manual)
+terraform_destroy:
+  stage: destroy
+  image: hashicorp/terraform:1.5.0
+  script:
+    - terraform destroy -auto-approve
+  only:
+    changes:
+      - terraform/**
+  when: manual
