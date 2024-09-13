@@ -41,8 +41,12 @@ build_docker:
   image: docker:20.10
   services:
     - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_DRIVER: overlay2
   script:
-    - docker build -t my-docker-image:latest .
+      - docker info
+      - docker build -t my-docker-image:latest .
   only:
     changes:
       - docker/**
