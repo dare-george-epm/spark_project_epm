@@ -1,4 +1,3 @@
-
 #Modify this docker for your needs
 FROM openjdk:8-alpine
 
@@ -22,8 +21,8 @@ RUN set -ex && \
     # Removed the .cache to save space
     rm -rf /root/.cache && rm -rf /var/cache/apk/*
 
-COPY binary/spark-${SPARK_VERSION}-bin-without-hadoop.tgz /spark-${SPARK_VERSION}-bin-without-hadoop.tgz
-COPY binary/hadoop-${HADOOP_VERSION}.tar.gz /hadoop-${HADOOP_VERSION}.tar.gz
+COPY spark-${SPARK_VERSION}-bin-without-hadoop.tgz /spark-${SPARK_VERSION}-bin-without-hadoop.tgz
+COPY hadoop-${HADOOP_VERSION}.tar.gz /hadoop-${HADOOP_VERSION}.tar.gz
 
 #Install Spark
 RUN tar -xzf /spark-${SPARK_VERSION}-bin-without-hadoop.tgz -C /opt/ && \
