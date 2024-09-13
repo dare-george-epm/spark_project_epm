@@ -55,7 +55,4 @@ terraform_destroy:
   image: hashicorp/terraform:1.5.0
   script:
     - terraform destroy -auto-approve
-  only:
-    changes:
-      - terraform/**
   when: manual
