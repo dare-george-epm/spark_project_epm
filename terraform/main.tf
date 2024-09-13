@@ -1,4 +1,3 @@
-# Setup azurerm as a state backend
 terraform {
   backend "azurerm" {
   }
@@ -97,3 +96,5 @@ output "kube_config" {
   sensitive = true
   value = azurerm_kubernetes_cluster.bdcc.kube_config_raw
 }
+
+

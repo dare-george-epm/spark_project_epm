@@ -6,7 +6,7 @@ setup(
     name='sparkbasics',
     version='1.0.0',
     description='BDCC Pyspark Basics project',
-    py_moudles=['__main__'],
+    py_modules=['__main__'],
     packages=['src.main.python'],
     zip_safe=False
 )

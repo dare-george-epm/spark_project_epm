@@ -1,0 +1,16 @@
+.dockerignore# Ignore Terraform scripts
+terraform/
+
+# Ignore Kubernetes deployment files
+
+
+# Ignore other unnecessary files
+*.log
+*.tmp
+deployment.yaml
+mywork/
+screenshots/
+sparkbasics.egg-info/
+spark-job.yaml
+spark-role.yaml
+binaries/

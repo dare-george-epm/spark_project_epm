@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spark-pi7
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spark-pi7
+  template:
+    metadata:
+      labels:
+        app: spark-pi7
+    spec:
+      serviceAccountName: spark
+      imagePullSecrets:
+      - name: myregistrykey  # Reference to the Docker Hub secret
+      containers:
+      - name: spark-pi7
+        image: odare179/imagev3:latest  # Make sure this image contains Spark and all necessary dependencies
+        command: ["/opt/entrypoint.sh"]
+        args: [
+          "spark-submit",
+          "--master", "k8s://https://192.168.49.2:8443",
+          "--deploy-mode", "cluster",
+          "--name", "spark-pi7",
+          "--class", "org.apache.spark.examples.SparkPi",
+          "--conf", "spark.driver.memory=2G",
+          "--conf", "spark.executor.memory=2G",
+          "--conf", "spark.executor.instances=2",
+          "--conf", "spark.kubernetes.container.image=imagev3:latest",
+          "--conf", "spark.kubernetes.authenticate.driver.serviceAccountName=spark",
+          "local:///opt/main/main.py"
+        ]
