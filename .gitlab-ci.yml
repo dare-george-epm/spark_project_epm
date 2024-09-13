@@ -19,7 +19,6 @@ variables:
   hotels_path: $hotels_path
   weather_path: $weather_path
 
-
 # Terraform Apply
 terraform_apply:
   stage: terraform
