@@ -1,9 +1,3 @@
-# Setup azurerm as a state backend
-terraform {
-  backend "azurerm" {
-  }
-}
-
 # Configure the Microsoft Azure Provider
 provider "azurerm" {
   features {}
@@ -76,7 +70,7 @@ resource "azurerm_kubernetes_cluster" "bdcc" {
   default_node_pool {
     name       = "default"
     node_count = 1
-    vm_size    = "Standard_D8_v3"
+    vm_size    = "Standard_D2_v2"
   }
 
   identity {
@@ -97,3 +91,10 @@ output "kube_config" {
   sensitive = true
   value = azurerm_kubernetes_cluster.bdcc.kube_config_raw
 }
+
+output "kube_server" {
+  value = azurerm_kubernetes_cluster.bdcc.kube_config.0.host
+}
+
+
+

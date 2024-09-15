@@ -21,18 +21,15 @@ RUN set -ex && \
     # Removed the .cache to save space
     rm -rf /root/.cache && rm -rf /var/cache/apk/*
 
-COPY spark-${SPARK_VERSION}-bin-without-hadoop.tgz /spark-${SPARK_VERSION}-bin-without-hadoop.tgz
-COPY hadoop-${HADOOP_VERSION}.tar.gz /hadoop-${HADOOP_VERSION}.tar.gz
-
-#Install Spark
-RUN tar -xzf /spark-${SPARK_VERSION}-bin-without-hadoop.tgz -C /opt/ && \
+RUN wget -O /spark-${SPARK_VERSION}-bin-without-hadoop.tgz https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-without-hadoop.tgz && \
+    tar -xzf /spark-${SPARK_VERSION}-bin-without-hadoop.tgz -C /opt/ && \
     ln -s /opt/spark-${SPARK_VERSION}-bin-without-hadoop $SPARK_HOME && \
     rm -f /spark-${SPARK_VERSION}-bin-without-hadoop.tgz && \
     mkdir -p $SPARK_HOME/work-dir && \
     mkdir -p $SPARK_HOME/spark-warehouse
 
-# Install Hadoop
-RUN tar -xzf /hadoop-${HADOOP_VERSION}.tar.gz -C /opt/ && \
+RUN wget -O /hadoop-${HADOOP_VERSION}.tar.gz https://archive.apache.org/dist/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz && \
+    tar -xzf /hadoop-${HADOOP_VERSION}.tar.gz -C /opt/ && \
     ln -s /opt/hadoop-${HADOOP_VERSION} $HADOOP_HOME && \
     rm -f /hadoop-${HADOOP_VERSION}.tar.gz
 
@@ -45,20 +42,18 @@ RUN wget -O $SPARK_HOME/jars/hadoop-azure-datalake-${HADOOP_VERSION}.jar https:/
 RUN wget -O $SPARK_HOME/jars/azure-storage-7.0.0.jar https://repo1.maven.org/maven2/com/microsoft/azure/azure-storage/7.0.0/azure-storage-7.0.0.jar
 RUN wget -O $SPARK_HOME/jars/azure-data-lake-store-sdk-2.3.6.jar https://repo1.maven.org/maven2/com/microsoft/azure/azure-data-lake-store-sdk/2.3.6/azure-data-lake-store-sdk-2.3.6.jar
 RUN wget -O $SPARK_HOME/jars/azure-keyvault-core-1.0.0.jar https://repo1.maven.org/maven2/com/microsoft/azure/azure-keyvault-core/1.0.0/azure-keyvault-core-1.0.0.jar
-RUN wget -O $SPARK_HOME/jars/geohash-1.4.0.jar https://repo1.maven.org/maven2/ch/hsr/geohash/1.4.0/geohash-1.4.0.jar
+RUN wget -O $SPARK_HOME/jars/azure-keyvault-core-1.0.0.jar https://repo1.maven.org/maven2/ch/hsr/geohash/1.4.0/geohash-1.4.0.jar
 
-COPY /docker/entrypoint.sh /opt/
-COPY dist/sparkbasics-*.egg /opt/
-COPY src /opt/
+COPY ./docker/entrypoint.sh /opt/
+COPY ./dist/sparkbasics-*.egg /opt/
 
 RUN chmod +x /opt/*.sh
 
 RUN apk update && \
-    apk add --no-cache python3 py3-pip build-base python3-dev musl-dev && \
-    pip3 install --upgrade pip && \
-    pip3 install setuptools pydantic==1.9.2 pygeohash requests pyspark opencage python-geohash && \
+    apk add --no-cache python3 py3-pip && \
+    pip3 install --upgrade pip setuptools pygeohash requests && \
+    # Removed the .cache to save space
     rm -rf /var/cache/apk/*
-
 
 WORKDIR /opt/spark/work-dir
 ENTRYPOINT [ "/opt/entrypoint.sh" ]
