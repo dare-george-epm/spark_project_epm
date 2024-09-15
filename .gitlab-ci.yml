@@ -36,11 +36,7 @@ create_acr_secret:
   stage: deploy
   image: bitnami/kubectl:latest
   script:
-    - kubectl create secret docker-registry acr-secret \
-      --docker-server=sparkdgepamcontainer.azurecr.io \
-      --docker-username=$ARM_CLIENT_ID \
-      --docker-password=$ARM_CLIENT_SECRET \
-      --docker-email=Dare_George@epam.com
+    - kubectl create secret docker-registry acr-secret --docker-server=sparkdgepamcontainer.azurecr.io --docker-username=$ARM_CLIENT_ID --docker-password=$ARM_CLIENT_SECRET --docker-email=Dare_George@epam.com
   when: manual
   only:
     - master
