@@ -37,3 +37,4 @@ spark-role.yaml
 /terraform_apply (#18259919) · Jobs · Dare George _ M06_SparkBasics_DG_PYTHON_AZURE · GitLab_files/
 "__pycache__/"
 __pycache__
+/src/main/pycache/
