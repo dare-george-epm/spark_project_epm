@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     weather_path: str
 
     class Config:
-        # env_file = ".env"  # Optional for local development, not required in GitLab
+        env_file = ".env"  # Optional for local development, not required in GitLab
         case_sensitive = True
 
 # Instantiate the settings object

@@ -13,4 +13,7 @@ binaries/
 .gitlab-ci.yml
 binary/
 .env
+terraform_apply/
+test_build/
+.pytest_cache
 

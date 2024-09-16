@@ -4,20 +4,6 @@ stages:
   - destroy
 
 variables:
-#  ARM_CLIENT_ID: $azure_client_id
-#  ARM_CLIENT_SECRET: $azure_client_secret
-#  ARM_TENANT_ID: $azure_tenant_id
-#  ARM_SUBSCRIPTION_ID: $azure_subscription_id
-#  azure_storage_account: $azure_storage_account
-#  azure_client_id: $azure_client_id
-#  azure_client_secret: $azure_client_secret
-#  azure_tenant_id: $azure_tenant_id
-#  storage_container: $storage_container
-#  geocode_key: $geocode_key
-#  output_file_path: $output_file_path
-#  sampling_fraction: $sampling_fraction
-#  hotels_path: $hotels_path
-#  weather_path: $weather_path
   terraform_state_key: "epamspark/terraform.tfstate"
 
 # Terraform Apply
@@ -31,20 +17,10 @@ terraform_apply:
     - terraform apply
   when: manual
 
-# Create ACR Pull Secret
-create_acr_secret:
-  stage: deploy
-  image: bitnami/kubectl:latest
-  script:
-    - kubectl create secret docker-registry acr-secret --docker-server=sparkdgepamcontainer.azurecr.io --docker-username=$ARM_CLIENT_ID --docker-password=$ARM_CLIENT_SECRET --docker-email=Dare_George@epam.com
-  when: manual
-  only:
-    - master
-
 # Deploy Spark Job (Manual)
 deploy_spark_job:
   stage: deploy
-  image: bitnami/kubectl:latest
+  image: sparkdgepamcontainer.azurecr.io/final_spark_new:latest
   script:
     - "echo \"Using Kubernetes API server URL: $KUBERNETES_MASTER\""
     - "spark-submit \
@@ -72,6 +48,80 @@ terraform_destroy:
     - cd terraform
     - terraform init -backend-config="storage_account_name=$azure_storage_account" -backend-config="container_name=$storage_container" -backend-config="key=$terraform_state_key"
   when: manual
+
+
+
+
+#stages:
+#  - terraform
+#  - deploy
+#  - destroy
+#
+#variables:
+##  ARM_CLIENT_ID: $azure_client_id
+##  ARM_CLIENT_SECRET: $azure_client_secret
+##  ARM_TENANT_ID: $azure_tenant_id
+##  ARM_SUBSCRIPTION_ID: $azure_subscription_id
+##  azure_storage_account: $azure_storage_account
+##  azure_client_id: $azure_client_id
+##  azure_client_secret: $azure_client_secret
+##  azure_tenant_id: $azure_tenant_id
+##  storage_container: $storage_container
+##  geocode_key: $geocode_key
+##  output_file_path: $output_file_path
+##  sampling_fraction: $sampling_fraction
+##  hotels_path: $hotels_path
+##  weather_path: $weather_path
+#  terraform_state_key: "epamspark/terraform.tfstate"
+#
+## Terraform Apply
+#terraform_apply:
+#  stage: terraform
+#  image: hashicorp/terraform:1.5.0
+#  script:
+#    - cd terraform
+#    - terraform init -backend-config="storage_account_name=$azure_storage_account" -backend-config="container_name=storage_container" -backend-config="key=$terraform_state_key"
+#    - terraform plan
+#    - terraform apply
+#  when: manual
+#
+## Deploy Spark Job (Manual)
+#deploy_spark_job:
+#  stage: deploy
+#  image: bitnami/kubectl:latest
+#  script:
+#    - "echo \"Using Kubernetes API server URL: $KUBERNETES_MASTER\""
+#    - "spark-submit \
+#      --master k8s://$KUBERNETES_MASTER \
+#      --conf spark.jars.ivy=/tmp/.ivy \
+#      --deploy-mode cluster \
+#      --name data-eng-spark \
+#      --num-executors 1 \
+#      --conf spark.cores=1 \
+#      --conf spark.driver.memory=3G \
+#      --conf spark.executor.memory=2G \
+#      --conf spark.kubernetes.executor.request.cores=500m \
+#      --conf spark.kubernetes.driver.request.cores=600m \
+#      --conf spark.kubernetes.driver.container.image=sparkdgepamcontainer.azurecr.io/final_spark_new:latest \
+#      --conf spark.kubernetes.executor.container.image=sparkdgepamcontainer.azurecr.io/final_spark_new:latest \
+#      --conf spark.kubernetes.container.image.pullSecrets=acr-secret \
+#      local:///opt/main/main.py"
+#  when: manual
+#
+## Destroy Infrastructure (Manual)
+#terraform_destroy:
+#  stage: destroy
+#  image: hashicorp/terraform:1.5.0
+#  script:
+#    - cd terraform
+#    - terraform init -backend-config="storage_account_name=$azure_storage_account" -backend-config="container_name=$storage_container" -backend-config="key=$terraform_state_key"
+#  when: manual
+
+
+
+
+
+
 
 
 
