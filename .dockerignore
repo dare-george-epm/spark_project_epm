@@ -16,4 +16,6 @@ binary/
 terraform_apply/
 test_build/
 .pytest_cache
+__pycache__
+"__pycache__"
 
