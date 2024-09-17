@@ -29,3 +29,4 @@ spark-role.yaml
 /src/test/data_6332bb99-3bed-4911-83dd-419ab2da5c14.csv/
 /New folder/
 /configmap.yaml
+/src/main/__pycache__
