@@ -21,7 +21,7 @@ def main():
         my_config.azure_tenant_id
     )
 
-    # Reading and processing hotels data
+    # Reading and processing hotel data
     df_hotels = read_csv_to_df(spark, my_config.azure_storage_account, my_config.hotels_path)
     df_hotels = df_hotels.sample(my_config.sampling_fraction)
     df_hotels = geocode_missing_lat_long(df_hotels, {my_config.geocode_key})
