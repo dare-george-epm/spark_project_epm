@@ -1,13 +1,10 @@
-
 *.class
 *.log
 .env
-
 # idea
 /.idea
 /target
 *.iml
-
 .venv/
 venv/
 venv_p/
@@ -18,11 +15,8 @@ myvenv312/
 mywork/
 spark-role.yaml
 /docker/myimagedataeng/
-
-
 ### Mac ###
 .DS_Store
-
 /myvenv/
 /spark.sh
 /mywork2/teststorage.py
