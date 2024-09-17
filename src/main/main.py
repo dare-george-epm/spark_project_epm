@@ -50,7 +50,7 @@ def main():
 
     # Reading the combined DataFrame back from storage and display
     read_df_combined = spark.read.parquet(output_path)
-    read_df_combined.show(10)
+    read_df_combined.show(11)
 
     # Stop the Spark session
     spark.stop()
