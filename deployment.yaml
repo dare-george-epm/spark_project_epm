@@ -10,13 +10,8 @@ spec:
       restartPolicy: Never
       containers:
       - name: spark-job
-        image: odare179/beito1:latest
+        image: ${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ secrets.CONTAINER_NAME }}:latest
         imagePullPolicy: IfNotPresent
-#        env:
-#        - name: SPARK_DRIVER_BIND_ADDRESS
-#          valueFrom:
-#            fieldRef:
-#              fieldPath: status.podIP
         envFrom:
         - configMapRef:
             name: spark-job-config
@@ -24,13 +19,13 @@ spec:
         args:
         - "driver"
         - "--master"
-        - "k8s://https://kubernetes.default.svc:443"
+        - "${{ secrets.KUBERNETES_MASTER}}"
         - "--deploy-mode"
         - "client"
         - "--name"
         - "spark-job"
         - "--conf"
-        - "spark.kubernetes.container.image=odare179/beito1:latest"
+        - "spark.kubernetes.container.image=${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ secrets.CONTAINER_NAME }}:latest"
         - "--conf"
         - "spark.executor.instances=1"
         - "--conf"
@@ -42,3 +37,53 @@ spec:
         - "--conf"
         - "spark.executor.cores=2"
         - "local:///opt/main/main.py"
+      imagePullSecrets:
+      - name: ${{ secrets.ACR_SECRET_NAME }}
+
+
+
+
+#apiVersion: batch/v1
+#kind: Job
+#metadata:
+#  name: spark-job
+#spec:
+#  template:
+#    metadata:
+#      name: spark-job
+#    spec:
+#      restartPolicy: Never
+#      containers:
+#      - name: spark-job
+#        image: odare179/beito1:latest
+#        imagePullPolicy: IfNotPresent
+##        env:
+##        - name: SPARK_DRIVER_BIND_ADDRESS
+##          valueFrom:
+##            fieldRef:
+##              fieldPath: status.podIP
+#        envFrom:
+#        - configMapRef:
+#            name: spark-job-config
+#        command: ["/opt/entrypoint.sh"]
+#        args:
+#        - "driver"
+#        - "--master"
+#        - "k8s://https://kubernetes.default.svc:443"
+#        - "--deploy-mode"
+#        - "client"
+#        - "--name"
+#        - "spark-job"
+#        - "--conf"
+#        - "spark.kubernetes.container.image=odare179/beito1:latest"
+#        - "--conf"
+#        - "spark.executor.instances=1"
+#        - "--conf"
+#        - "spark.driver.memory=3g"
+#        - "--conf"
+#        - "spark.executor.memory=3g"
+#        - "--conf"
+#        - "spark.driver.cores=2"
+#        - "--conf"
+#        - "spark.executor.cores=2"
+#        - "local:///opt/main/main.py"
