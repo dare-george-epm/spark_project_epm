@@ -39,23 +39,42 @@ jobs:
           cluster-name: ${{ secrets.CLUSTER_NAME }}
           admin: 'false'
           use-kubelogin: 'true'
+      # Debugging step to list directories in the repository root
+      - name: List directories in repository root
+        run: ls -alh ${{ github.workspace }}
 
-      # Debugging step to list files in the root directory
-      - name: List files in root directory
-        run: ls -alh /
-          
-          # Debugging step to list files in the k8s directory
-               - name: List files in k8s directory
-               run: ls -alh ${{ github.workspace }}/k8s
+      # Debugging step to list files in the k8s directory
+      - name: List files in k8s directory
+        run: ls -alh ${{ github.workspace }}/k8s
+
+      # Debugging step to list files in the kubeconfig directory
+      - name: List kubeconfig directory
+        run: ls -alh /home/runner/work/_temp
 
       # Deploys application based on given manifest file
       - name: Deploys application
         uses: Azure/k8s-deploy@v4
         with:
           action: deploy
-          manifests: ./../../k8s/deployment.yml
+          manifests: ${{ github.workspace }}/k8s/deployment.yml
           images: |
             ${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ secrets.CONTAINER_NAME }}:latest
+#      # Debugging step to list files in the root directory
+#      - name: List files in root directory
+#        run: ls -alh /
+#
+#          # Debugging step to list files in the k8s directory
+#               - name: List files in k8s directory
+#               run: ls -alh ${{ github.workspace }}/k8s
+#
+#      # Deploys application based on given manifest file
+#      - name: Deploys application
+#        uses: Azure/k8s-deploy@v4
+#        with:
+#          action: deploy
+#          manifests: ./../../k8s/deployment.yml
+#          images: |
+#            ${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ secrets.CONTAINER_NAME }}:latest
 
       # Debugging step to list files in the kubeconfig directory
 #      - name: List kubeconfig directory
