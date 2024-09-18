@@ -12,9 +12,9 @@ spec:
       - name: spark-job
         image: ${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ secrets.CONTAINER_NAME }}:latest
         imagePullPolicy: IfNotPresent
-        envFrom:
-        - configMapRef:
-            name: spark-job-config
+#        envFrom:
+#        - configMapRef:
+#            name: spark-job-config
         command: ["/opt/entrypoint.sh"]
         args:
         - "driver"
@@ -40,9 +40,9 @@ spec:
       imagePullSecrets:
       - name: ${{ secrets.ACR_SECRET_NAME }}
 
-
-
-
+#
+#
+#
 #apiVersion: batch/v1
 #kind: Job
 #metadata:
