@@ -25,24 +25,29 @@ jobs:
           inlineScript: |
             az account show
 
-#      # Use kubelogin to configure your kubeconfig for Azure auth
-#      - name: Set up kubelogin for non-interactive login
-#        uses: azure/use-kubelogin@v1
-#        with:
-#          kubelogin-version: 'v0.0.25'
-#
-#      # Retrieves your Azure Kubernetes Service cluster's kubeconfig file
-#      - name: Get K8s context
-#        uses: azure/aks-set-context@v3
-#        with:
-#          resource-group: ${{ secrets.RESOURCE_GROUP }}
-#          cluster-name: ${{ secrets.CLUSTER_NAME }}
-#          admin: 'false'
-#          use-kubelogin: 'true'
+      # Use kubelogin to configure your kubeconfig for Azure auth
+      - name: Set up kubelogin for non-interactive login
+        uses: azure/use-kubelogin@v1
+        with:
+          kubelogin-version: 'v0.0.25'
 
-      # Deploys application based on given manifest file
+      # Retrieves your Azure Kubernetes Service cluster's kubeconfig file
+      - name: Get K8s context
+        uses: azure/aks-set-context@v3
+        with:
+          resource-group: ${{ secrets.RESOURCE_GROUP }}
+          cluster-name: ${{ secrets.CLUSTER_NAME }}
+          admin: 'false'
+          use-kubelogin: 'true'
+
+      # Debugging step to list files in the root directory
       - name: List files in root directory
         run: ls -alh /
+
+      # Debugging step to list files in the kubeconfig directory
+      - name: List kubeconfig directory
+        run: ls -alh /home/runner/work/_temp
+
       - name: Deploys application
         uses: Azure/k8s-deploy@v4
         with:
