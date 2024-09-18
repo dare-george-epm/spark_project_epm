@@ -38,7 +38,11 @@ jobs:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
           cluster-name: ${{ secrets.CLUSTER_NAME }}
           admin: 'false'
-          use-kubelogin: 'false'
+          use-kubelogin: 'true'
+      - name: Print secrets
+        run: |
+          echo "Resource Group: ${{ secrets.RESOURCE_GROUP }}"
+          echo "Cluster Name: ${{ secrets.CLUSTER_NAME }}"
 
       # Deploys application based on given manifest file
       - name: Deploys application
