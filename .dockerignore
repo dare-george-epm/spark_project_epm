@@ -2,7 +2,7 @@
 terraform/
 *.log
 *.tmp
-deploymentxxxpy
+deployment.yaml
 mywork/
 docker/Dockerfile
 screenshots/
