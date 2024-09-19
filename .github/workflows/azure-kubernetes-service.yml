@@ -47,4 +47,4 @@ jobs:
           action: deploy
           manifests: deployment.yaml
           images: |
-            ${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ secrets.CONTAINER_NAME }}:latest
+            ${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/final_spark_new:latest
