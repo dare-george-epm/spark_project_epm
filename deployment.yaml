@@ -10,11 +10,11 @@ spec:
     spec:
       containers:
       - name: spark-job
-        image: ${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/final_spark_new:latest
+        image: odare179/beito1:latest
         command: ["/opt/entrypoint.sh"]
         args: ["driver", "--master", "k8s://https://kubernetes.default.svc:443",
                "--deploy-mode", "client", "--name", "spark-job", "--conf",
-               "spark.kubernetes.container.image=${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/final_spark_new:latest",
+               "spark.kubernetes.container.image=odare179/beito1:latest",
                "--conf", "spark.executor.instances=1",
                "--conf", "spark.driver.memory=3g",
                "--conf", "spark.executor.memory=3g",
@@ -22,50 +22,35 @@ spec:
                "--conf", "spark.executor.cores=2",
                "local:///opt/main/main.py"]
       restartPolicy: Never
-
-
-
-
-
-
 #apiVersion: batch/v1
+
+
 #kind: Job
 #metadata:
 #  name: spark-job
 #spec:
 #  template:
 #    metadata:
-#      name: spark-job
+#      labels:
+#        job-name: spark-job
 #    spec:
-#      restartPolicy: Never
 #      containers:
 #      - name: spark-job
 #        image: ${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/final_spark_new:latest
-#        imagePullPolicy: IfNotPresent
 #        command: ["/opt/entrypoint.sh"]
-#        args:
-#        - "driver"
-#        - "--master"
-#        - "${{ secrets.KUBERNETES_MASTER}}"
-#        - "--deploy-mode"
-#        - "client"
-#        - "--name"
-#        - "spark-job"
-#        - "--conf"
-#        - "spark.kubernetes.container.image=${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/final_spark_new:latest"
-#        - "--conf"
-#        - "spark.executor.instances=1"
-#        - "--conf"
-#        - "spark.driver.memory=3g"
-#        - "--conf"
-#        - "spark.executor.memory=3g"
-#        - "--conf"
-#        - "spark.driver.cores=2"
-#        - "--conf"
-#        - "spark.executor.cores=2"
-#        - "local:///opt/main/main.py"
-#      imagePullSecrets:
-#      - name: ${{ secrets.ACR_SECRET_NAME }}
+#        args: ["driver", "--master", "k8s://https://kubernetes.default.svc:443",
+#               "--deploy-mode", "client", "--name", "spark-job", "--conf",
+#               "spark.kubernetes.container.image=${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/final_spark_new:latest",
+#               "--conf", "spark.executor.instances=1",
+#               "--conf", "spark.driver.memory=3g",
+#               "--conf", "spark.executor.memory=3g",
+#               "--conf", "spark.driver.cores=2",
+#               "--conf", "spark.executor.cores=2",
+#               "local:///opt/main/main.py"]
+#      restartPolicy: Never
+
+
+
 #
 ##
 #
