@@ -12,9 +12,6 @@ spec:
       - name: spark-job
         image: ${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/final_spark_new:latest
         imagePullPolicy: IfNotPresent
-#        envFrom:
-#        - configMapRef:
-#            name: spark-job-config
         command: ["/opt/entrypoint.sh"]
         args:
         - "driver"
