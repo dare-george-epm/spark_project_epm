@@ -62,3 +62,6 @@ jobs:
         with:
           action: deploy
           manifests: deployment.yaml
+          images: 
+            | 
+            odare179/myspark2:latest
