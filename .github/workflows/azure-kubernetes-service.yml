@@ -1,4 +1,4 @@
-name: Build and deploy an app to AKS.
+name: Build and deploy an app to AKS
 
 on:
   workflow_dispatch:
@@ -39,7 +39,16 @@ jobs:
           cluster-name: ${{ secrets.CLUSTER_NAME }}
           admin: 'false'
           use-kubelogin: 'true'
+
+      # Check if the secret already exists
+      - name: Check if Kubernetes secret exists
+        id: check-secret
+        run: |
+          kubectl get secret azure-secrets || echo "Secret does not exist"
+
+      # Create Kubernetes secrets if they do not exist
       - name: Create Kubernetes secrets
+        if: steps.check-secret.outputs.result == 'Secret does not exist'
         run: |
           kubectl create secret generic azure-secrets \
           --from-literal=azure_client_id=${{ secrets.AZURE_CLIENT_ID }} \
@@ -54,7 +63,7 @@ jobs:
           --from-literal=weather_path=${{ secrets.WEATHER_PATH }} \
           --from-literal=output_storage_account=${{ secrets.OUTPUT_STORAGE_ACCOUNT }} \
           --from-literal=output_storage_account_key=${{ secrets.OUTPUT_STORAGE_ACCOUNT_KEY }} \
-          --from-literal=output_storage_container=${{ secrets.OUTPUT_STORAGE_CONTAINER }} \
+          --from-literal=output_storage_container=${{ secrets.OUTPUT_STORAGE_CONTAINER }}
 
       # Deploys application based on given manifest file
       - name: Deploys application
