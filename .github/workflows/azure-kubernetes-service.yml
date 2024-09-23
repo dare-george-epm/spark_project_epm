@@ -55,7 +55,6 @@ jobs:
           --from-literal=output_storage_account=${{ secrets.OUTPUT_STORAGE_ACCOUNT }} \
           --from-literal=output_storage_account_key=${{ secrets.OUTPUT_STORAGE_ACCOUNT_KEY }} \
           --from-literal=output_storage_container=${{ secrets.OUTPUT_STORAGE_CONTAINER }} \
-          --dry-run=client -o yaml | kubectl apply -f -
 
       # Deploys application based on given manifest file
       - name: Deploys application
@@ -63,4 +62,3 @@ jobs:
         with:
           action: deploy
           manifests: deployment.yaml
-#          images: | ${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/final_spark_new:latest
