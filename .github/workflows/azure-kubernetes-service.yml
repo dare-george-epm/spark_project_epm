@@ -39,6 +39,14 @@ jobs:
           cluster-name: ${{ secrets.CLUSTER_NAME }}
           admin: 'false'
           use-kubelogin: 'true'
+
+      # Check if the secret already exists
+      - name: Check if Kubernetes secret exists
+        id: check-secret
+        run: |
+          kubectl get secret azure-secrets || echo "Secret does not exist"
+
+      # Create Kubernetes secrets if they do not exist
       - name: Create Kubernetes secrets
         if: steps.check-secret.outputs.result == 'Secret does not exist'
         run: |
@@ -55,7 +63,7 @@ jobs:
           --from-literal=weather_path=${{ secrets.WEATHER_PATH }} \
           --from-literal=output_storage_account=${{ secrets.OUTPUT_STORAGE_ACCOUNT }} \
           --from-literal=output_storage_account_key=${{ secrets.OUTPUT_STORAGE_ACCOUNT_KEY }} \
-          --from-literal=output_storage_container=${{ secrets.OUTPUT_STORAGE_CONTAINER }} \
+          --from-literal=output_storage_container=${{ secrets.OUTPUT_STORAGE_CONTAINER }}
 
       # Deploys application based on given manifest file
       - name: Deploys application
@@ -66,3 +74,6 @@ jobs:
           images: 
             | 
             odare179/myspark2:latest
+```
+
+This way, the secret will only be created if it doesn't already exist, avoiding unnecessary recreation. Let me know if you need any more help with this!
