@@ -1,101 +1,62 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: spark-job
+  name: spark-job6
+  namespace: default
 spec:
   template:
     metadata:
+      name: spark-job6
       labels:
-        job-name: spark-job
+        app: spark-job6
     spec:
       containers:
-      - name: spark-job
-        image: odare179/beito1:latest
+      - name: spark-job6
+        image: odare179/myspark2:latest  # Docker Hub image reference
+        imagePullPolicy: IfNotPresent
         command: ["/opt/entrypoint.sh"]
-        args: ["driver", "--master", "k8s://https://kubernetes.default.svc:443",
-               "--deploy-mode", "client", "--name", "spark-job", "--conf",
-               "spark.kubernetes.container.image=odare179/beito1:latest",
-               "--conf", "spark.executor.instances=1",
-               "--conf", "spark.driver.memory=3g",
-               "--conf", "spark.executor.memory=3g",
-               "--conf", "spark.driver.cores=2",
-               "--conf", "spark.executor.cores=2",
-               "local:///opt/main/main.py"]
+        args:
+        - "driver"
+        - "--master"
+        - "k8s://https://kubernetes.default.svc:443"
+        - "--deploy-mode"
+        - "cluster"
+        - "--name"
+        - "spark-job6"
+        - "--conf"
+        - "spark.kubernetes.container.image=odare179/myspark2:latest"  # Docker Hub image reference
+        - "--conf"
+        - "spark.executor.instances=2"
+        - "--conf"
+        - "spark.dynamicAllocation.shuffleTracking.enabled=true"
+        - "--conf"
+        - "spark.kubernetes.namespace=default"
+        - "--conf"
+        - "spark.kubernetes.driver.secretKeyRef.azure_client_id=${{ secrets.AZURE_CLIENT_ID }}"
+        - "--conf"
+        - "spark.kubernetes.driver.secretKeyRef.azure_client_secret=${{ secrets.AZURE_CLIENT_SECRET }}"
+        - "--conf"
+        - "spark.kubernetes.driver.secretKeyRef.azure_storage_account=${{ secrets.AZURE_STORAGE_ACCOUNT }}"
+        - "--conf"
+        - "spark.kubernetes.driver.secretKeyRef.azure_tenant_id=${{ secrets.AZURE_TENANT_ID }}"
+        - "--conf"
+        - "spark.kubernetes.driver.secretKeyRef.geocode_key=${{ secrets.GEOCODE_KEY }}"
+        - "--conf"
+        - "spark.kubernetes.driver.secretKeyRef.hotels_path=${{ secrets.HOTELS_PATH }}"
+        - "--conf"
+        - "spark.kubernetes.driver.secretKeyRef.output_file_path=${{ secrets.OUTPUT_FILE_PATH }}"
+        - "--conf"
+        - "spark.kubernetes.driver.secretKeyRef.sampling_fraction=${{ secrets.SAMPLING_FRACTION }}"
+        - "--conf"
+        - "spark.kubernetes.driver.secretKeyRef.storage_container=${{ secrets.STORAGE_CONTAINER }}"
+        - "--conf"
+        - "spark.kubernetes.driver.secretKeyRef.weather_path=${{ secrets.WEATHER_PATH }}"
+        - "--conf"
+        - "spark.kubernetes.driver.secretKeyRef.output_storage_account=${{ secrets.OUTPUT_STORAGE_ACCOUNT }}"
+        - "--conf"
+        - "spark.kubernetes.driver.secretKeyRef.output_storage_account_key=${{ secrets.OUTPUT_STORAGE_ACCOUNT_KEY }}"
+        - "--conf"
+        - "spark.kubernetes.driver.secretKeyRef.output_storage_container=${{ secrets.OUTPUT_STORAGE_CONTAINER }}"
+        - "local:///opt/main/main.py"
       restartPolicy: Never
-#apiVersion: batch/v1
-
-
-#kind: Job
-#metadata:
-#  name: spark-job
-#spec:
-#  template:
-#    metadata:
-#      labels:
-#        job-name: spark-job
-#    spec:
-#      containers:
-#      - name: spark-job
-#        image: ${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/final_spark_new:latest
-#        command: ["/opt/entrypoint.sh"]
-#        args: ["driver", "--master", "k8s://https://kubernetes.default.svc:443",
-#               "--deploy-mode", "client", "--name", "spark-job", "--conf",
-#               "spark.kubernetes.container.image=${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/final_spark_new:latest",
-#               "--conf", "spark.executor.instances=1",
-#               "--conf", "spark.driver.memory=3g",
-#               "--conf", "spark.executor.memory=3g",
-#               "--conf", "spark.driver.cores=2",
-#               "--conf", "spark.executor.cores=2",
-#               "local:///opt/main/main.py"]
-#      restartPolicy: Never
-
-
-
-#
-##
-#
-#
-#apiVersion: batch/v1
-#kind: Job
-#metadata:
-#  name: spark-job
-#spec:
-#  template:
-#    metadata:
-#      name: spark-job
-#    spec:
-#      restartPolicy: Never
-#      containers:
-#      - name: spark-job
-#        image: odare179/beito1:latest
-#        imagePullPolicy: IfNotPresent
-##        env:
-##        - name: SPARK_DRIVER_BIND_ADDRESS
-##          valueFrom:
-##            fieldRef:
-##              fieldPath: status.podIP
-#        envFrom:
-#        - configMapRef:
-#            name: spark-job-config
-#        command: ["/opt/entrypoint.sh"]
-#        args:
-#        - "driver"
-#        - "--master"
-#        - "k8s://https://kubernetes.default.svc:443"
-#        - "--deploy-mode"
-#        - "client"
-#        - "--name"
-#        - "spark-job"
-#        - "--conf"
-#        - "spark.kubernetes.container.image=odare179/beito1:latest"
-#        - "--conf"
-#        - "spark.executor.instances=1"
-#        - "--conf"
-#        - "spark.driver.memory=3g"
-#        - "--conf"
-#        - "spark.executor.memory=3g"
-#        - "--conf"
-#        - "spark.driver.cores=2"
-#        - "--conf"
-#        - "spark.executor.cores=2"
-#        - "local:///opt/main/main.py"
+  backoffLimit: 3
