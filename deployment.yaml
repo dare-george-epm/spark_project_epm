@@ -1,17 +1,17 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: spark-job
+  name: spark-job3
   namespace: default
 spec:
   template:
     metadata:
-      name: spark-job
+      name: spark-job3
       labels:
-        app: spark-job
+        app: spark-job3
     spec:
       containers:
-      - name: spark-job
+      - name: spark-job3
         image: odare179/myspark2:latest  # Docker Hub image reference
         imagePullPolicy: IfNotPresent
         command: ["/opt/entrypoint.sh"]
@@ -22,7 +22,7 @@ spec:
         - "--deploy-mode"
         - "cluster"
         - "--name"
-        - "spark-job"
+        - "spark-job3"
         - "--conf"
         - "spark.kubernetes.container.image=odare179/myspark2:latest"  # Docker Hub image reference
         - "--conf"
