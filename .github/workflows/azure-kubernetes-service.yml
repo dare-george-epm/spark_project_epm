@@ -31,6 +31,25 @@ jobs:
         with:
           kubelogin-version: 'v0.0.25'
 
+      # # Retrieves your Azure Kubernetes Service cluster's kubeconfig file
+      # - name: Get K8s context
+      #   uses: azure/aks-set-context@v3
+      #   with:
+      #     resource-group: ${{ secrets.RESOURCE_GROUP }}
+      #     cluster-name: ${{ secrets.CLUSTER_NAME }}
+      #     admin: 'false'
+      #     use-kubelogin: 'true'
+
+      # # Check if the secret already exists
+      # - name: Check if Kubernetes secret exists
+      #   id: check-secret
+      #   run: |
+      #     kubectl get secret azure-secrets || echo "Secret does not exist"
+
+      # # Create Kubernetes secrets if they do not exist
+      # - name: Create Kubernetes secrets
+      #   if: steps.check-secret.outputs.result == 'Secret does not exist'
+      #   run: |
       # Retrieves your Azure Kubernetes Service cluster's kubeconfig file
       - name: Get K8s context
         uses: azure/aks-set-context@v3
@@ -39,16 +58,7 @@ jobs:
           cluster-name: ${{ secrets.CLUSTER_NAME }}
           admin: 'false'
           use-kubelogin: 'true'
-
-      # Check if the secret already exists
-      - name: Check if Kubernetes secret exists
-        id: check-secret
-        run: |
-          kubectl get secret azure-secrets || echo "Secret does not exist"
-
-      # Create Kubernetes secrets if they do not exist
       - name: Create Kubernetes secrets
-        if: steps.check-secret.outputs.result == 'Secret does not exist'
         run: |
           kubectl create secret generic azure-secrets \
           --from-literal=azure_client_id=${{ secrets.AZURE_CLIENT_ID }} \
