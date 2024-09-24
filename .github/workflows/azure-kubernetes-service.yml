@@ -1,4 +1,4 @@
-name: Build and deploy an app to AKS
+name: Build and deploy an app to AKS.
 
 on:
   workflow_dispatch:
