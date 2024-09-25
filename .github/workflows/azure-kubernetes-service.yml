@@ -40,22 +40,22 @@ jobs:
           admin: 'false'
           use-kubelogin: 'true'
 
-      # - name: Create Kubernetes secrets
-      #   run: |
-      #     kubectl create secret generic azure-secrets \
-      #     --from-literal=azure_client_id=${{ secrets.AZURE_CLIENT_ID }} \
-      #     --from-literal=azure_client_secret=${{ secrets.AZURE_CLIENT_SECRET }} \
-      #     --from-literal=azure_storage_account=${{ secrets.AZURE_STORAGE_ACCOUNT }} \
-      #     --from-literal=azure_tenant_id=${{ secrets.AZURE_TENANT_ID }} \
-      #     --from-literal=geocode_key=${{ secrets.GEOCODE_KEY }} \
-      #     --from-literal=hotels_path=${{ secrets.HOTELS_PATH }} \
-      #     --from-literal=output_file_path=${{ secrets.OUTPUT_FILE_PATH }} \
-      #     --from-literal=sampling_fraction=${{ secrets.SAMPLING_FRACTION }} \
-      #     --from-literal=storage_container=${{ secrets.STORAGE_CONTAINER }} \
-      #     --from-literal=weather_path=${{ secrets.WEATHER_PATH }} \
-      #     --from-literal=output_storage_account=${{ secrets.OUTPUT_STORAGE_ACCOUNT }} \
-      #     --from-literal=output_storage_account_key=${{ secrets.OUTPUT_STORAGE_ACCOUNT_KEY }} \
-      #     --from-literal=output_storage_container=${{ secrets.OUTPUT_STORAGE_CONTAINER }}
+      - name: Create Kubernetes secrets
+        run: |
+          kubectl create secret generic azure-secrets \
+          --from-literal=azure_client_id=${{ secrets.AZURE_CLIENT_ID }} \
+          --from-literal=azure_client_secret=${{ secrets.AZURE_CLIENT_SECRET }} \
+          --from-literal=azure_storage_account=${{ secrets.AZURE_STORAGE_ACCOUNT }} \
+          --from-literal=azure_tenant_id=${{ secrets.AZURE_TENANT_ID }} \
+          --from-literal=geocode_key=${{ secrets.GEOCODE_KEY }} \
+          --from-literal=hotels_path=${{ secrets.HOTELS_PATH }} \
+          --from-literal=output_file_path=${{ secrets.OUTPUT_FILE_PATH }} \
+          --from-literal=sampling_fraction=${{ secrets.SAMPLING_FRACTION }} \
+          --from-literal=storage_container=${{ secrets.STORAGE_CONTAINER }} \
+          --from-literal=weather_path=${{ secrets.WEATHER_PATH }} \
+          --from-literal=output_storage_account=${{ secrets.OUTPUT_STORAGE_ACCOUNT }} \
+          --from-literal=output_storage_account_key=${{ secrets.OUTPUT_STORAGE_ACCOUNT_KEY }} \
+          --from-literal=output_storage_container=${{ secrets.OUTPUT_STORAGE_CONTAINER }}
 
       # Deploys application based on given manifest file
       - name: Deploys application
