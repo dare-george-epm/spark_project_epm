@@ -26,7 +26,7 @@ spec:
         - "--conf"
         - "spark.kubernetes.container.image=odare179/myspark2:latest"  # Docker Hub image reference
         - "--conf"
-        - "spark.executor.instances=1"
+        - "spark.executor.instances=2"
         - "--conf"
         - "spark.driver.memory=2g"
         - "--conf"
